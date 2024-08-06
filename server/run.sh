@@ -1,0 +1,1 @@
+HF_ENDPOINT="https://hf-mirror.com" UVICORN_PORT=37679 uvicorn main:app --reload
