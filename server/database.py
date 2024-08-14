@@ -8,8 +8,8 @@ if db.has_collection(collection_name="image") == False:
   fields = [
      FieldSchema(name="id", dtype=DataType.INT64, is_primary=True, auto_id=True),
      FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=512),
-     FieldSchema(name="tag_vector", dtype=DataType.FLOAT_VECTOR, dim=512),
-     FieldSchema(name="tag", dtype=DataType.VARCHAR, max_length=256),
+    #  FieldSchema(name="tag_vector", dtype=DataType.FLOAT_VECTOR, dim=512),
+    #  FieldSchema(name="tag", dtype=DataType.VARCHAR, max_length=256),
      FieldSchema(name="path", dtype=DataType.VARCHAR, max_length=256)
   ]
 
@@ -37,8 +37,8 @@ async def insert_image(dir):
     {
       "path": image_path,
       "vector": get_image_vector(image_path),
-      "tag_vector": None,
-      "tag": None
+      # "tag_vector": None,
+      # "tag": None
     }
     for image_path in images
   ]

@@ -10,6 +10,8 @@ from fastapi.responses import FileResponse
 
 from image import get_text_vector
 from database import insert_image, search_image
+from utils.choose_directory import choose_directory
+from utils.configure import read_config, write_config
 
 app = FastAPI()
 
@@ -23,13 +25,28 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return True
 
 @app.post("/images/add")
-async def add_images(data: Request):
-    params = await data.json()
+async def add_images():
+    dir = choose_directory()
 
-    asyncio.create_task(insert_image(params['dir']))
+    print(dir)
+
+    config = read_config()
+
+    print(config)
+    print(dir in config['dirs'])
+    print(dir in config['dirs'] == False)
+
+    if (not dir in config['dirs']):
+        print('???')
+
+        config['dirs'].append(dir)
+
+        write_config(config)
+
+        asyncio.create_task(insert_image(dir))
     
     return True
 
