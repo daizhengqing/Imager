@@ -8,8 +8,8 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-from image import get_text_vector
-from database import insert_image, search_image
+from database.manager import insert_image, search_image
+from utils.image import get_text_vector
 from utils.choose_directory import choose_directory
 from utils.configure import read_config, write_config
 
@@ -31,13 +31,7 @@ def read_root():
 async def add_images():
     dir = choose_directory()
 
-    print(dir)
-
     config = read_config()
-
-    print(config)
-    print(dir in config['dirs'])
-    print(dir in config['dirs'] == False)
 
     if (not dir in config['dirs']):
         print('???')

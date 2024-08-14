@@ -1,8 +1,8 @@
 import re, os
 from pymilvus import MilvusClient, model, CollectionSchema, FieldSchema, DataType
-from image import get_image_vector
+from utils.image import get_image_vector
 
-db = MilvusClient('images.db')
+db = MilvusClient('database/images.db')
 
 if db.has_collection(collection_name="image") == False:
   fields = [
