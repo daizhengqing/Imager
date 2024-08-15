@@ -8,7 +8,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
-from database.manager import insert_image, search_image
+from database.manager import insert_image, search_image, get_image_by_dir
 from utils.image import get_text_vector
 from utils.choose_directory import choose_directory
 from utils.configure import read_config, write_config
@@ -34,8 +34,6 @@ async def add_images():
     config = read_config()
 
     if (not dir in config['dirs']):
-        print('???')
-
         config['dirs'].append(dir)
 
         write_config(config)
@@ -50,7 +48,14 @@ async def search_images(keyword: Optional[str] = ""):
 
    return search_image([get_text_vector(keyword)])
 
-@app.get("/images")
-async def get_image_path(path: Optional[str] = ""):
-   print(path)
-   return FileResponse(path)
+@app.get("/images/path/{path}")
+async def get_image_path(path: str = ""):
+    print(path)
+    
+    return FileResponse(path)
+
+@app.get("/images/dir")
+async def get_image_dir(dir: Optional[str] = ""):
+    print(dir)
+
+    return get_image_by_dir(dir)

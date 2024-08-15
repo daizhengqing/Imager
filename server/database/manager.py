@@ -10,7 +10,8 @@ if db.has_collection(collection_name="image") == False:
      FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=512),
     #  FieldSchema(name="tag_vector", dtype=DataType.FLOAT_VECTOR, dim=512),
     #  FieldSchema(name="tag", dtype=DataType.VARCHAR, max_length=256),
-     FieldSchema(name="path", dtype=DataType.VARCHAR, max_length=256)
+     FieldSchema(name="path", dtype=DataType.VARCHAR, max_length=256),
+     FieldSchema(name="dir", dtype=DataType.VARCHAR, max_length=256)
   ]
 
   schema = CollectionSchema(fields=fields)
@@ -35,6 +36,7 @@ async def insert_image(dir):
 
   data = [
     {
+      "dir": dir,
       "path": image_path,
       "vector": get_image_vector(image_path),
       # "tag_vector": None,
@@ -47,3 +49,6 @@ async def insert_image(dir):
 
 def search_image(keyword):
    return db.search(collection_name="image", data=keyword, output_fields=['path'], search_params={"metric_type": "COSINE", "params": {}})
+
+def get_image_by_dir(dir):
+  return db.query(collection_name="image", filter=f'dir == "{dir}"', output_fields=['path'])
